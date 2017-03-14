@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.esy.stack.dao.impl.WebSiteMainMapper" >
+  <resultMap id="BaseResultMap" type="com.esy.stack.entity.WebSiteMain" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="web_name" property="webName" jdbcType="VARCHAR" />
+    <result column="web_char" property="webChar" jdbcType="VARCHAR" />
+    <result column="web_alias" property="webAlias" jdbcType="VARCHAR" />
+    <result column="web_main_url" property="webMainUrl" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, web_name, web_char, web_alias, web_main_url, class_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_web_site_main
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_web_site_main
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.esy.stack.entity.WebSiteMain" >
+    insert into t_web_site_main (id, web_name, web_char, 
+      web_alias, web_main_url, class_name
+      )
+    values (#{id,jdbcType=INTEGER}, #{webName,jdbcType=VARCHAR}, #{webChar,jdbcType=VARCHAR}, 
+      #{webAlias,jdbcType=VARCHAR}, #{webMainUrl,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.esy.stack.entity.WebSiteMain" >
+    insert into t_web_site_main
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="webName != null" >
+        web_name,
+      </if>
+      <if test="webChar != null" >
+        web_char,
+      </if>
+      <if test="webAlias != null" >
+        web_alias,
+      </if>
+      <if test="webMainUrl != null" >
+        web_main_url,
+      </if>
+      <if test="className != null" >
+        class_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="webName != null" >
+        #{webName,jdbcType=VARCHAR},
+      </if>
+      <if test="webChar != null" >
+        #{webChar,jdbcType=VARCHAR},
+      </if>
+      <if test="webAlias != null" >
+        #{webAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="webMainUrl != null" >
+        #{webMainUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.esy.stack.entity.WebSiteMain" >
+    update t_web_site_main
+    <set >
+      <if test="webName != null" >
+        web_name = #{webName,jdbcType=VARCHAR},
+      </if>
+      <if test="webChar != null" >
+        web_char = #{webChar,jdbcType=VARCHAR},
+      </if>
+      <if test="webAlias != null" >
+        web_alias = #{webAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="webMainUrl != null" >
+        web_main_url = #{webMainUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null" >
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.esy.stack.entity.WebSiteMain" >
+    update t_web_site_main
+    set web_name = #{webName,jdbcType=VARCHAR},
+      web_char = #{webChar,jdbcType=VARCHAR},
+      web_alias = #{webAlias,jdbcType=VARCHAR},
+      web_main_url = #{webMainUrl,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.esy.stack.dao.impl.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.esy.stack.entity.Article" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="column_id" property="columnId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="tag" property="tag" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="real_source" property="realSource" jdbcType="VARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.esy.stack.entity.ArticleWithBLOBs" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="html_content" property="htmlContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, column_id, title, tag, summary, author, real_source, keywords, publish_time, 
+    create_time, url, status, times
+  </sql>
+  <sql id="Blob_Column_List" >
+    content, html_content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_article
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_article
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.esy.stack.entity.ArticleWithBLOBs" >
+    insert into t_article (id, column_id, title, 
+      tag, summary, author, 
+      real_source, keywords, publish_time, 
+      create_time, url, status, 
+      times, content, html_content
+      )
+    values (#{id,jdbcType=BIGINT}, #{columnId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{tag,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{realSource,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{url,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{times,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{htmlContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.esy.stack.entity.ArticleWithBLOBs" >
+    insert into t_article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="columnId != null" >
+        column_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="tag != null" >
+        tag,
+      </if>
+      <if test="summary != null" >
+        summary,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="realSource != null" >
+        real_source,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="publishTime != null" >
+        publish_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="times != null" >
+        times,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="htmlContent != null" >
+        html_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="columnId != null" >
+        #{columnId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null" >
+        #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="realSource != null" >
+        #{realSource,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="htmlContent != null" >
+        #{htmlContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.esy.stack.entity.ArticleWithBLOBs" >
+    update t_article
+    <set >
+      <if test="columnId != null" >
+        column_id = #{columnId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null" >
+        tag = #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="realSource != null" >
+        real_source = #{realSource,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="times != null" >
+        times = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="htmlContent != null" >
+        html_content = #{htmlContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.esy.stack.entity.ArticleWithBLOBs" >
+    update t_article
+    set column_id = #{columnId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      real_source = #{realSource,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      url = #{url,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      times = #{times,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR},
+      html_content = #{htmlContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.esy.stack.entity.Article" >
+    update t_article
+    set column_id = #{columnId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      real_source = #{realSource,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      url = #{url,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      times = #{times,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
