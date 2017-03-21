@@ -15,4 +15,6 @@ public interface WebSiteColumnMapper extends BaseDao<WebSiteColumn>{
     int updateByPrimaryKeySelective(WebSiteColumn record);
 
     int updateByPrimaryKey(WebSiteColumn record);
+
+    int updateStatusById(WebSiteColumn record);
 }

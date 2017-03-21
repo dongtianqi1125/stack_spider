@@ -16,4 +16,6 @@ public class WebSiteColumnMapperTest {
 		System.out.println(webSiteColumnMapper);	
 	}
 
+
+
 }

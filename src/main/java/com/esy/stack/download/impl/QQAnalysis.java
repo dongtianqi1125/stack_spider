@@ -35,7 +35,7 @@ public class QQAnalysis extends BaseAnalysis{
 	}
 
 	@Override
-	protected List<ArticleWithBLOBs> parsetArticles(String content, WebSiteColumn aWebSiteColumn) {
+	protected List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
 		List<ArticleWithBLOBs> result = new ArrayList<ArticleWithBLOBs>();
 		Document doc = Jsoup.parse(content);
 		Elements atagList = doc.select(SELECT);

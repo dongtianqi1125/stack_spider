@@ -42,14 +42,14 @@ public abstract class BaseAnalysis implements Analystor{
 		if(CollectionUtils.isEmpty(columns))
 			return;
 		for (WebSiteColumn aWebSiteColumn : columns) {
-			updateColumnStatus(aWebSiteColumn, StatusEnum.PROCESSING);
+			updateColumnStatus(aWebSiteColumn.getId(), StatusEnum.PROCESSING);
 			for(String colunUrl : parseColumnUrl(aWebSiteColumn)) {
 				String content = getIntefaceContent(colunUrl);
 				if(StringUtils.isEmpty(content)) {
-					updateColumnStatus(aWebSiteColumn, StatusEnum.FAILURE);
+					updateColumnStatus(aWebSiteColumn.getId(), StatusEnum.FAILURE);
 					continue;
 				}
-				List<ArticleWithBLOBs> articles = parsetArticles(content, aWebSiteColumn);
+				List<ArticleWithBLOBs> articles = parseArticles(content, aWebSiteColumn);
 				for (ArticleWithBLOBs each : articles) {
 					try {
 						articleMapper.insert(each);
@@ -57,7 +57,7 @@ public abstract class BaseAnalysis implements Analystor{
 						log.error("article插入异常", e);
 					}
 				}
-				updateColumnStatus(aWebSiteColumn, StatusEnum.SUCCESS);
+				updateColumnStatus(aWebSiteColumn.getId(), StatusEnum.WAIT);
 			}
 		}
 	}
@@ -65,7 +65,8 @@ public abstract class BaseAnalysis implements Analystor{
 	
 	/**
 	 * 获取站点id
-	 * @return
+	 * <p>网站实体处理对象</p>
+	 * @return int
 	 */
 	protected abstract int getWebSiteId();
 	
@@ -74,7 +75,7 @@ public abstract class BaseAnalysis implements Analystor{
 	 * @param content
 	 * @return
 	 */
-	protected abstract List<ArticleWithBLOBs> parsetArticles(String content, WebSiteColumn aWebSiteColumn);
+	protected abstract List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn);
 	
 	/**
 	 * 拼凑栏目url
@@ -100,9 +101,11 @@ public abstract class BaseAnalysis implements Analystor{
 	 * @param aWebSiteColumn
 	 * @param status
 	 */
-	private void updateColumnStatus(WebSiteColumn aWebSiteColumn, StatusEnum status){
+	private void updateColumnStatus(int columnId, StatusEnum status){
+		WebSiteColumn aWebSiteColumn = new WebSiteColumn();
+		aWebSiteColumn.setId(columnId);
 		aWebSiteColumn.setStatus(status.getValue());
-		webSiteColumnMapper.updateByPrimaryKey(aWebSiteColumn);
+		webSiteColumnMapper.updateByPrimaryKeySelective(aWebSiteColumn);
 	}
 
 
@@ -138,9 +141,7 @@ public abstract class BaseAnalysis implements Analystor{
 	private String contentEncode(String content) throws UnsupportedEncodingException {
 		Assert.notNull(content);
 		ByteBuffer buf = Charset.forName(Constants.BASE_CHARSET).encode(content);
-		byte[] bytebuf = new byte[buf.limit()];
-		buf.get(bytebuf);
-		return new String(bytebuf, Constants.BASE_CHARSET);
+		return new String(buf.array(), Constants.BASE_CHARSET);
 	}
 	
 	/**

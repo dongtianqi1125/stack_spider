@@ -1,19 +1,7 @@
 package com.esy.stack.util;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.esy.stack.exception.DownLoadException;
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -26,7 +14,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.esy.stack.exception.DownLoadException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -44,8 +35,8 @@ public final class HttpClientUtil {
 	 * post请求
 	 * @param url {@link String}
 	 * @param param {@link Map}
-	 * @return string 
-	 * @throws IOException 
+	 * @return string
+	 * @throws IOException
 	 */
 	public static String postRequest(String url, Map<String, Object> param) throws IOException {
 		if(log.isInfoEnabled())
@@ -56,7 +47,7 @@ public final class HttpClientUtil {
 			List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 			for (Map.Entry<String, Object> each : param.entrySet())
 				formparams.add(new BasicNameValuePair(each.getKey(), each.getValue().toString()));
-			
+
 			UrlEncodedFormEntity requestEntity = new UrlEncodedFormEntity(formparams, "utf-8");
 			method.setEntity(requestEntity);
 		}
@@ -79,8 +70,8 @@ public final class HttpClientUtil {
 			log.info("downloadToString from url : " + url);
 		HttpGet httpGet = new HttpGet(url);
 		httpGet.setConfig(REQUESTCONFIG);
-		try(CloseableHttpResponse response = HTTPCLIENT.execute(httpGet);) {
-			if (response.getStatusLine().getStatusCode() == org.apache.http.HttpStatus.SC_OK) {
+		try(CloseableHttpResponse response = HTTPCLIENT.execute(httpGet)) {
+			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				HttpEntity entity = response.getEntity();
 				return copyToString(entity.getContent(), charSet);
 			} else {
@@ -88,7 +79,7 @@ public final class HttpClientUtil {
 			}
 		}
 	}
- 	
+
 	/**
 	 * 下载url内容，以指定编码保存到文件
 	 * @param url
@@ -110,7 +101,7 @@ public final class HttpClientUtil {
 			}
 		}
 	}
-	
+
 	private static void copyToFile(InputStream is, File descFile, String charset) throws IOException {
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(is, charset));
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(descFile), charset))) {
@@ -121,19 +112,22 @@ public final class HttpClientUtil {
 			}
 		}
 	}
-	
+
 	private static String copyToString(InputStream is, String charset) throws IOException {
+
+
+
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(is, charset));) {
 			char[] cbuf = new char[BUF];
 			int hasread = 0;
 			StringBuilder sb = new StringBuilder(4 * BUF);
 			while ((hasread = br.read(cbuf)) > 0)
 				sb.append(new String(cbuf, 0, hasread));
-			
+
 			return sb.toString();
 		}
 	}
-	
+
 
 
 	private HttpClientUtil() {

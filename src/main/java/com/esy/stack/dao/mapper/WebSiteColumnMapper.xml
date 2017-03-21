@@ -15,13 +15,13 @@
     id, web_site_id, column_url, column_name, column_alias, status, domain_url, total_pages
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_web_site_column
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="select" resultMap="BaseResultMap" parameterType="com.esy.stack.entity.WebSiteColumn" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_web_site_column
     where 1 = 1
@@ -50,8 +50,8 @@
         and total_pages = #{totalPages,jdbcType=INTEGER}
       </if>
   </select>
- 
-  
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_web_site_column
     where id = #{id,jdbcType=INTEGER}
@@ -155,6 +155,13 @@
       status = #{status,jdbcType=INTEGER},
       domain_url = #{domainUrl,jdbcType=VARCHAR},
       total_pages = #{totalPages,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateStatusById" parameterType="com.esy.stack.entity.WebSiteColumn" >
+    update t_web_site_column
+    set
+      status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
