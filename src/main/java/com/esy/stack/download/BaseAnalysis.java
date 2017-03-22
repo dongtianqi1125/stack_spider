@@ -57,7 +57,7 @@ public abstract class BaseAnalysis implements Analystor{
 						log.error("article插入异常", e);
 					}
 				}
-				updateColumnStatus(aWebSiteColumn.getId(), StatusEnum.WAIT);
+				updateColumnStatus(aWebSiteColumn.getId(), StatusEnum.SUCCESS);
 			}
 		}
 	}

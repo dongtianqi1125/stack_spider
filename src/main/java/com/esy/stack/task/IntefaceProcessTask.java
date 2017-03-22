@@ -18,7 +18,7 @@ public class IntefaceProcessTask implements TimerTask{
 	@Autowired
 	private Executor executor;
 	
-	@Scheduled(cron = "0 0/5 * * * ?")
+	@Scheduled(cron = "0 38 8 * * ?")
 	@Override
 	public void work() {
 		log.warn("###################定时启动分析网页数据开始#####################");

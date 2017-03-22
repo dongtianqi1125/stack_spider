@@ -22,6 +22,10 @@ public class QQAnalysisTest {
 
     @Autowired
     private QQAnalysis qqAnalysis;
+    @Autowired
+    private W163Analysis w163Analysis;
+    @Autowired
+    private ChinatimesAnalysis chinatimesProcess;
 
     @Before
     public void before() throws Exception {
@@ -37,7 +41,8 @@ public class QQAnalysisTest {
     @Test
     public void testGetWebSiteId() throws Exception {
         log.warn(qqAnalysis.getWebSiteId());
-        qqAnalysis.analys();
+//        qqAnalysis.analys();
+        chinatimesProcess.analys();
     }
 
     /**
