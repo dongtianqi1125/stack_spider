@@ -4,3 +4,4 @@
 .settings
 .idea/
 stack_spider.iml
+log*

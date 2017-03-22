@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
 @Component
@@ -27,6 +28,10 @@ public class IntefaceProcessTask implements TimerTask{
 			executor.execute(() -> analystor.analys());
 		}
 		log.warn("###################定时启动分析网页数据结束#####################");
-		
+	}
+
+	@Scheduled(cron = "0 35 14 22 3 ?")
+	public void test() {
+		System.out.println(1);
 	}
 }

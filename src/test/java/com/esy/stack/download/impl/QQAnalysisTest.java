@@ -26,6 +26,14 @@ public class QQAnalysisTest {
     private W163Analysis w163Analysis;
     @Autowired
     private ChinatimesAnalysis chinatimesProcess;
+    @Autowired
+    private THSAnalysis thsAnalysis;
+    @Autowired
+    private SinaAnalysis sinaAnalysis;
+    @Autowired
+    private JRTTAnalysis jrttAnalysis;
+    @Autowired
+    private PaperAnalysis paperAnalysis;
 
     @Before
     public void before() throws Exception {
@@ -42,8 +50,13 @@ public class QQAnalysisTest {
     public void testGetWebSiteId() throws Exception {
         log.warn(qqAnalysis.getWebSiteId());
 //        qqAnalysis.analys();
-        chinatimesProcess.analys();
+//        chinatimesProcess.analys();
+//        thsAnalysis.analys();
+//        sinaAnalysis.analys();
+//        jrttAnalysis.analys();
+        paperAnalysis.analys();
     }
+
 
     /**
      * Method: parseArticles(String content, WebSiteColumn aWebSiteColumn)

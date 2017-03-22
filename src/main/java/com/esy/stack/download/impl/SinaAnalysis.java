@@ -18,24 +18,24 @@ import java.util.List;
 
 /**
  * Created by guanjie on 2017/3/22.
- * 同花顺
+ * 新浪
  */
 @Component
-public class THSAnalysis extends BaseAnalysis {
+public class SinaAnalysis extends BaseAnalysis {
 
     private static final StringManager stringManager = StringManager.getStringManageByFileName(Constants.HANDLER_PROP_PATH);
 
     @Override
     protected int getWebSiteId() {
-        return stringManager.getIntValue("ths_website_id");
+        return stringManager.getIntValue("sina_website_id");
     }
 
     @Override
     protected List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
-        List<ArticleWithBLOBs> result = new ArrayList<>();
+        List<ArticleWithBLOBs> result = new ArrayList<ArticleWithBLOBs>();
         Document doc = Jsoup.parse(content);
-        System.out.println(doc);
-        Elements atagList = doc.select(".t_news .txt_t a[href ^= newsDetail]");
+        System.out.println("doc :" + doc);
+        Elements atagList = doc.select("#Main .listBlk .list_009 a[href ^= http://finance.sina.com.cn/stock]");
         for (Element each : atagList) {
             ArticleWithBLOBs record = new ArticleWithBLOBs();
             record.setTitle(each.text());
@@ -49,8 +49,8 @@ public class THSAnalysis extends BaseAnalysis {
 
     @Override
     protected List<String> parseColumnUrl(WebSiteColumn aWebSiteColumn) {
-        List<String> result = new ArrayList<>();
-        for(int i = 1; i <= aWebSiteColumn.getTotalPages(); i++)
+        List<String> result = new ArrayList<String>();
+        for (int i = 1; i <= aWebSiteColumn.getTotalPages(); i++)
             result.add(MessageFormat.format(aWebSiteColumn.getColumnUrl(), i));
         return result;
     }

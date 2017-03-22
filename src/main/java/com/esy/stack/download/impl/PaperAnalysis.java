@@ -11,35 +11,35 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by guanjie on 2017/3/22.
- * 同花顺
+ * 澎湃新闻
  */
 @Component
-public class THSAnalysis extends BaseAnalysis {
+public class PaperAnalysis extends BaseAnalysis {
 
     private static final StringManager stringManager = StringManager.getStringManageByFileName(Constants.HANDLER_PROP_PATH);
+    private static final String PAPER_WEBSITE_DOMAIN_NAME = stringManager.getValue("pengpai_website_domain_name");
 
     @Override
     protected int getWebSiteId() {
-        return stringManager.getIntValue("ths_website_id");
+        return stringManager.getIntValue("pengpai_website_id");
     }
 
     @Override
     protected List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
         List<ArticleWithBLOBs> result = new ArrayList<>();
         Document doc = Jsoup.parse(content);
-        System.out.println(doc);
-        Elements atagList = doc.select(".t_news .txt_t a[href ^= newsDetail]");
+        Elements atagList = doc.select(".t_news .news_tit02 a");
         for (Element each : atagList) {
             ArticleWithBLOBs record = new ArticleWithBLOBs();
             record.setTitle(each.text());
-            record.setUrl(each.attr("href"));
+            record.setUrl(PAPER_WEBSITE_DOMAIN_NAME + each.attr("href"));
             record.setCreateTime(new Date());
             record.setColumnId(aWebSiteColumn.getId());
             result.add(record);
@@ -49,9 +49,6 @@ public class THSAnalysis extends BaseAnalysis {
 
     @Override
     protected List<String> parseColumnUrl(WebSiteColumn aWebSiteColumn) {
-        List<String> result = new ArrayList<>();
-        for(int i = 1; i <= aWebSiteColumn.getTotalPages(); i++)
-            result.add(MessageFormat.format(aWebSiteColumn.getColumnUrl(), i));
-        return result;
+        return Arrays.asList(aWebSiteColumn.getColumnUrl());
     }
 }

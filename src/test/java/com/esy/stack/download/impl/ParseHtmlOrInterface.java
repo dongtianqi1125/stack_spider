@@ -27,16 +27,15 @@ public class ParseHtmlOrInterface {
         File file = new File(FILE_163_PATH);
         try {
             Document htmlDoc = Jsoup.parse(file, FILE_163_CHAR);
-            Elements newsMain = htmlDoc.select(".list_litpic a" );
+            Elements newsMain = htmlDoc.select(".t_news .news_tit02 a");
+            System.out.println(newsMain);
             for (Element element : newsMain) {
-                Elements h2tags = element.select("h2");
-                if(h2tags == null || h2tags.isEmpty())
-                    continue;
-                log.info(h2tags.get(0).text());
+                System.out.println(element.text());
+                System.out.println(element.attr("href"));
             }
 //			System.out.println(newsMain.get(0).attr("title"));
 //            System.out.println(newsMain.get(0).select("h2").text());
-           log.info(newsMain);
+//           log.info(newsMain);
         } catch (IOException e) {
             log.error("", e);
         }
@@ -55,7 +54,7 @@ public class ParseHtmlOrInterface {
 
     @Test
     public void testDownloadHtml() throws Exception {
-        HttpClientUtil.downloadToFile("http://m.chinatimes.cc/finance/guandian", "utf-8", new File("d://sql.txt"));
+        HttpClientUtil.downloadToFile("http://m.thepaper.cn/load_list.jsp?nodeids=25434", "utf-8", new File("d://sql.txt"));
     }
 
 }
