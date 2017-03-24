@@ -1,21 +1,15 @@
 package com.esy.stack.config;
 
-import java.beans.PropertyVetoException;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.concurrent.Executor;
-
-import javax.sql.DataSource;
-
+import com.esy.stack.util.Constants;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -24,18 +18,33 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.client.RestTemplate;
 
-import com.esy.stack.util.Constants;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.concurrent.Executor;
 
 @Configuration
-@PropertySource(value = {"classpath:prop/jdbc.properties"})
 @ComponentScan(basePackages = {"com.esy.stack"})
 public class ContextConfig {
-	@Autowired
-	private Environment env;
+
+	@Profile(value = "dev")
+	@Bean(name = "jdbcConfig")
+	Properties propertiesDev() throws IOException {
+		Properties properties = new Properties();
+		properties.load(new ClassPathResource("prop/jdbc_dev.properties").getInputStream());
+		return properties;
+	}
+	@Profile(value = "prod")
+	@Bean(name = "jdbcConfig")
+	Properties propertiesProd() throws IOException {
+		Properties properties = new Properties();
+		properties.load(new ClassPathResource("prop/jdbc_prod.properties").getInputStream());
+		return properties;
+	}
 
 	@Bean(destroyMethod = "close")
-	public DataSource dataSource() throws PropertyVetoException {
+	public DataSource dataSource(@Qualifier("jdbcConfig") Properties env) throws PropertyVetoException {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
 		dataSource.setDriverClass(env.getProperty("jdbc.driverClass"));
 		dataSource.setJdbcUrl(env.getProperty("jdbc.url"));

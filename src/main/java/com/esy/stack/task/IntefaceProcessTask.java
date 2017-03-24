@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 @Component
 @Log4j
@@ -19,7 +20,7 @@ public class IntefaceProcessTask implements TimerTask{
 	@Autowired
 	private Executor executor;
 	
-	@Scheduled(cron = "0 38 8 * * ?")
+	@Scheduled(cron = "0 0/10 * * * ?")
 	@Override
 	public void work() {
 		log.warn("###################定时启动分析网页数据开始#####################");
@@ -30,8 +31,5 @@ public class IntefaceProcessTask implements TimerTask{
 		log.warn("###################定时启动分析网页数据结束#####################");
 	}
 
-	@Scheduled(cron = "0 35 14 22 3 ?")
-	public void test() {
-		System.out.println(1);
-	}
+
 }

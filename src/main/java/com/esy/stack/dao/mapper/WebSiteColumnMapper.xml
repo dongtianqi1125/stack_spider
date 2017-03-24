@@ -50,6 +50,9 @@
         and total_pages = #{totalPages,jdbcType=INTEGER}
       </if>
   </select>
+  <select id="checkIfAllHandler" resultType="int" >
+    SELECT (SELECT count(*) from t_web_site_column) = (SELECT COUNT(1) from t_web_site_column t where t.`status` = 2)
+  </select>
 
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -158,10 +161,15 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updateStatusById" parameterType="com.esy.stack.entity.WebSiteColumn" >
+  <update id="updateStatus" parameterType="com.esy.stack.entity.WebSiteColumn" >
     update t_web_site_column
     set
       status = #{status,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+    where 1 = 1
+    <if test="id != null" >
+      id = #{id,jdbcType=INTEGER}
+    </if>
   </update>
+
+
 </mapper>

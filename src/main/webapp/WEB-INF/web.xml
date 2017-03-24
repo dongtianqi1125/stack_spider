@@ -10,26 +10,11 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
-  <!-- dev测试环境  production 生产环境 -->
-	<!--<context-param>-->
-		<!--<param-name>spring.profiles.active</param-name>-->
-		<!--&lt;!&ndash; <param-value>dev</param-value> &ndash;&gt;-->
-		<!--<param-value>test</param-value>-->
-		<!--&lt;!&ndash; <param-value>production</param-value> &ndash;&gt;-->
-	<!--</context-param> -->
-
-
 	<context-param>
-        <param-name>log4jConfigLocation</param-name>  
-        <param-value>classpath:prop/log4j.properties</param-value>  
+		<param-name>spring.profiles.active</param-name>
+		<param-value>${environment}</param-value>
 	</context-param>
-	
-	<listener>
-        <listener-class>  
-            org.springframework.web.util.Log4jConfigListener  
-        </listener-class>  
-    </listener> 
-	
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:applicationContext.xml</param-value>

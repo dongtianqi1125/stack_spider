@@ -16,5 +16,12 @@ public interface WebSiteColumnMapper extends BaseDao<WebSiteColumn>{
 
     int updateByPrimaryKey(WebSiteColumn record);
 
-    int updateStatusById(WebSiteColumn record);
+    int updateStatus(WebSiteColumn record);
+
+    /**
+     * 检查所有栏目是否都有处理
+     * <p>用于最后改变栏目状态为未处理前的判断</p>
+     * @return 0 false 1 true
+     */
+    int checkIfAllHandler();
 }
