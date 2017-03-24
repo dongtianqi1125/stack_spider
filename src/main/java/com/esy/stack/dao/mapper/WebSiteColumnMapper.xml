@@ -165,7 +165,7 @@
     update t_web_site_column
     set
       status = #{status,jdbcType=INTEGER}
-    where 1 = 1
+    where 1 = 1 AND
     <if test="id != null" >
       id = #{id,jdbcType=INTEGER}
     </if>

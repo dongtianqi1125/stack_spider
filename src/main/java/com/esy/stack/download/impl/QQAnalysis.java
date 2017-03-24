@@ -1,21 +1,20 @@
 package com.esy.stack.download.impl;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import com.esy.stack.download.BaseAnalysis;
+import com.esy.stack.entity.ArticleWithBLOBs;
+import com.esy.stack.entity.WebSiteColumn;
+import com.esy.stack.util.Constants;
+import com.esy.stack.util.StringManager;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
-import com.esy.stack.download.BaseAnalysis;
-import com.esy.stack.entity.ArticleWithBLOBs;
-import com.esy.stack.entity.WebSiteColumn;
-import com.esy.stack.util.Constants;
-import com.esy.stack.util.StringManager;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 腾讯

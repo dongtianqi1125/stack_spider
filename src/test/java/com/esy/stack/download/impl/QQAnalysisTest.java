@@ -6,8 +6,12 @@ import org.junit.Before;
 import org.junit.After;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.annotation.Resource;
 
 /**
  * QQAnalysis Tester.
@@ -18,22 +22,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 @Log4j
+@ActiveProfiles("dev")
 public class QQAnalysisTest {
 
-    @Autowired
-    private QQAnalysis qqAnalysis;
-    @Autowired
+//    @Autowired
+//    private QQAnalysis qqAnalysis;
+    //    @Autowired
+    @Resource(name = "w163Analysis")
     private W163Analysis w163Analysis;
-    @Autowired
-    private ChinatimesAnalysis chinatimesProcess;
-    @Autowired
-    private THSAnalysis thsAnalysis;
-    @Autowired
-    private SinaAnalysis sinaAnalysis;
-    @Autowired
-    private JRTTAnalysis jrttAnalysis;
-    @Autowired
-    private PaperAnalysis paperAnalysis;
+
+//    @Autowired
+//    private ChinatimesAnalysis chinatimesProcess;
+//    @Autowired
+//    private THSAnalysis thsAnalysis;
+//    @Autowired
+//    private SinaAnalysis sinaAnalysis;
+//    @Autowired
+//    private JRTTAnalysis jrttAnalysis;
+//    @Autowired
+//    private PaperAnalysis paperAnalysis;
 
     @Before
     public void before() throws Exception {
@@ -48,13 +55,14 @@ public class QQAnalysisTest {
      */
     @Test
     public void testGetWebSiteId() throws Exception {
-        log.warn(qqAnalysis.getWebSiteId());
 //        qqAnalysis.analys();
 //        chinatimesProcess.analys();
 //        thsAnalysis.analys();
 //        sinaAnalysis.analys();
 //        jrttAnalysis.analys();
-        paperAnalysis.analys();
+//        paperAnalysis.analys();
+        w163Analysis.analys();
+        ;
     }
 
 

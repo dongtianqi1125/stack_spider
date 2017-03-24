@@ -24,7 +24,7 @@ public class W163Analysis extends BaseAnalysis {
 
     @Override
     protected int getWebSiteId() {
-        return stringManager.getIntValue("chinatimes_web_site_id");
+        return stringManager.getIntValue("w163_web_site_id");
     }
 
     /**

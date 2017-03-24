@@ -1,50 +1,50 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx.xsd">
-    
-    <bean class="com.esy.stack.config.ContextConfig" />
-    
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean class="com.esy.stack.config.ContextConfig"/>
+
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations">
-			<array>
-				<value>classpath*:com/esy/stack/dao/mapper/**/*.xml</value>
-			</array>
-		</property>
-    <!-- session工厂   配置分页插件 -->
-		<property name="plugins">
-			<array>
-				<ref bean="pageHelper"/>
-			</array>
-		</property>
-	</bean>
-	
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.esy.stack.dao.**.*" />
-		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-	</bean>
-	
-	<!-- 分页插件配置 -->	
-	<bean id="pageHelper" class="com.github.pagehelper.PageHelper">
-		<property name="properties">
-      		<props>
-				<prop key="dialect">mysql</prop>
-				<prop key="reasonable">true</prop>
-				<prop key="offsetAsPageNum">true</prop>
-				<prop key="pageSizeZero">true</prop>
-			</props>
-		</property>
-	</bean>
-    
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations">
+            <array>
+                <value>classpath*:com/esy/stack/dao/mapper/**/*.xml</value>
+            </array>
+        </property>
+        <!-- session工厂   配置分页插件 -->
+        <property name="plugins">
+            <array>
+                <ref bean="pageHelper"/>
+            </array>
+        </property>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.esy.stack.dao.**.*"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!-- 分页插件配置 -->
+    <bean id="pageHelper" class="com.github.pagehelper.PageHelper">
+        <property name="properties">
+            <props>
+                <prop key="dialect">mysql</prop>
+                <prop key="reasonable">true</prop>
+                <prop key="offsetAsPageNum">true</prop>
+                <prop key="pageSizeZero">true</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"></property>
-	</bean>
-	<!-- 开启声明式事务处理 -->
-	<tx:annotation-driven transaction-manager="transactionManager"/>
-	
-	
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!-- 开启声明式事务处理 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
 </beans>

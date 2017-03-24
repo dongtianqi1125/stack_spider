@@ -1,7 +1,9 @@
 package com.esy.stack.task;
 
 import com.esy.stack.download.Analystor;
+import com.esy.stack.download.BaseAnalysis;
 import com.esy.stack.download.TimerTask;
+import com.esy.stack.util.StatusEnum;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,7 +22,7 @@ public class IntefaceProcessTask implements TimerTask{
 	@Autowired
 	private Executor executor;
 	
-	@Scheduled(cron = "0 0/10 * * * ?")
+	@Scheduled(cron = "0 0/30 * * * ?")
 	@Override
 	public void work() {
 		log.warn("###################定时启动分析网页数据开始#####################");
@@ -30,6 +32,5 @@ public class IntefaceProcessTask implements TimerTask{
 		}
 		log.warn("###################定时启动分析网页数据结束#####################");
 	}
-
 
 }

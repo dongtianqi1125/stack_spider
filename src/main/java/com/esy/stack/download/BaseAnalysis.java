@@ -12,6 +12,7 @@ import com.esy.stack.util.StatusEnum;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -38,7 +39,6 @@ public abstract class BaseAnalysis implements Analystor {
      * <li>获取站点所有待处理栏目</li>
      * <li>改变栏目状态为处理中</li>
      * <li>爬虫爬取网页，解析文章，入库</li>
-     * <li>检查是否所有的栏目都处理完毕，如果处理完毕则改变所有栏目处理状态为待处理</li>
      * </ol>
      */
     @Override
@@ -48,13 +48,9 @@ public abstract class BaseAnalysis implements Analystor {
             return;
         for (WebSiteColumn column : columns)
             updateColumnStatus(column.getId(), StatusEnum.PROCESSING);
-
         for (WebSiteColumn aWebSiteColumn : columns) {
             handleEachColumn(aWebSiteColumn);
             updateColumnStatus(aWebSiteColumn.getId(), StatusEnum.SUCCESS);
-        }
-        if (webSiteColumnMapper.checkIfAllHandler() == 1) {
-            updateColumnStatus(null, StatusEnum.WAIT);
         }
     }
 
@@ -62,6 +58,7 @@ public abstract class BaseAnalysis implements Analystor {
      *改变栏目状态为处理中
      * @param aWebSiteColumn
      */
+    @Transactional
     private void handleEachColumn(WebSiteColumn aWebSiteColumn) {
         for (String colunUrl : parseColumnUrl(aWebSiteColumn)) {
             String content = getIntefaceContent(colunUrl);
@@ -130,7 +127,6 @@ public abstract class BaseAnalysis implements Analystor {
         webSiteColumnMapper.updateStatus(aWebSiteColumn);
     }
 
-
     /**
      * 获取接口提供的网页内容
      * <p>爬虫方法，模拟人的行为，睡眠1秒钟</p>
@@ -142,8 +138,7 @@ public abstract class BaseAnalysis implements Analystor {
         String content = null;
         try {
             content = HttpClientUtil.downloadToString(url, getWebSiteMainDO().getWebChar());
-//            TimeUnit.SECONDS.sleep(1);
-            TimeUnit.MILLISECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(1);
         } catch (IOException e) {
             log.error("url内容提取异常", e);
         } catch (InterruptedException e) {
