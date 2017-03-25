@@ -5,10 +5,12 @@ import com.esy.stack.entity.WebSiteColumn;
 import com.esy.stack.util.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by guanjie on 2017/3/24.
  */
+@Component
 public class EndCheck {
     @Autowired
     private WebSiteColumnMapper webSiteColumnMapper;
