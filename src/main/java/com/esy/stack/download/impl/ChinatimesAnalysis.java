@@ -1,7 +1,7 @@
 package com.esy.stack.download.impl;
 
 import com.esy.stack.download.BaseAnalysis;
-import com.esy.stack.entity.ArticleWithBLOBs;
+import com.esy.stack.entity.Article;
 import com.esy.stack.entity.WebSiteColumn;
 import com.esy.stack.util.Constants;
 import com.esy.stack.util.StringManager;
@@ -31,17 +31,17 @@ public class ChinatimesAnalysis extends BaseAnalysis {
     }
 
     @Override
-    protected List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
+    protected List<Article> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
         if (StringUtils.isEmpty(content))
             return Collections.emptyList();
-        List<ArticleWithBLOBs> result = new ArrayList<>();
+        List<Article> result = new ArrayList<>();
         Document doc = Jsoup.parse(content);
         Elements atagList = doc.select(".list_litpic a");
         for (Element each : atagList) {
             Elements h2tags = each.select("h2");
             if(h2tags == null || h2tags.isEmpty())
                 continue;
-            ArticleWithBLOBs record = new ArticleWithBLOBs();
+            Article record = new Article();
             record.setTitle(h2tags.get(0).text());
             record.setUrl(CHINATIMES_WEBSITE_DOMAIN_NAME + each.attr("href"));
             record.setCreateTime(new Date());
@@ -50,7 +50,7 @@ public class ChinatimesAnalysis extends BaseAnalysis {
         }
         Elements toplist = doc.select(".list_top a");
         if(toplist != null && !toplist.isEmpty()) {
-            ArticleWithBLOBs top = createTop(toplist.get(0));
+            Article top = createTop(toplist.get(0));
             if(top != null)
                 top.setColumnId(aWebSiteColumn.getId());
                 result.add(top);
@@ -58,11 +58,11 @@ public class ChinatimesAnalysis extends BaseAnalysis {
         return result;
     }
 
-    private ArticleWithBLOBs createTop(Element top) {
+    private Article createTop(Element top) {
         Elements h2tags = top.select("h1");
         if(h2tags == null || h2tags.isEmpty())
             return null;
-        ArticleWithBLOBs record = new ArticleWithBLOBs();
+        Article record = new Article();
         record.setTitle(h2tags.text());
         record.setUrl(CHINATIMES_WEBSITE_DOMAIN_NAME + top.attr("href"));
         record.setCreateTime(new Date());

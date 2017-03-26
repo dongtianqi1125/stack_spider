@@ -16,44 +16,75 @@
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="times" property="times" jdbcType="INTEGER" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.esy.stack.entity.ArticleWithBLOBs" extends="BaseResultMap" >
-    <result column="content" property="content" jdbcType="LONGVARCHAR" />
-    <result column="html_content" property="htmlContent" jdbcType="LONGVARCHAR" />
-  </resultMap>
   <sql id="Base_Column_List" >
     id, column_id, title, tag, summary, author, real_source, keywords, publish_time, 
     create_time, url, status, times
   </sql>
-  <sql id="Blob_Column_List" >
-    content, html_content
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from t_article
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.esy.stack.entity.Article" >
+    select
+    <include refid="Base_Column_List" />
+
+    from t_article
+    where 1 = 1
+    <if test="status != null" >
+      AND  status =  #{status,jdbcType=INTEGER}
+    </if>
+    <if test="times != null" >
+      AND  times =  #{times,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="countWaitArticle" resultType="int" parameterType="com.esy.stack.entity.Article" >
+    select
+      count(1)
+    from t_article
+    where 1 = 1
+    <if test="status != null" >
+      AND  status =  #{status,jdbcType=INTEGER}
+    </if>
+    <if test="times != null" >
+      AND  times =  #{times,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectCharSetByArticleId" resultType="string" parameterType="long" >
+    SELECT
+    t.web_char AS "webChar"
+    FROM
+    t_web_site_main t,
+    t_web_site_column t1,
+    t_article t2
+    WHERE
+    t.id = t1.web_site_id
+    AND t1.id = t2.column_id
+    AND t2.id = #{id,jdbcType=BIGINT}
+  </select>
+
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from t_article
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.esy.stack.entity.ArticleWithBLOBs" >
+  <insert id="insert" parameterType="com.esy.stack.entity.Article" >
     insert into t_article (id, column_id, title, 
       tag, summary, author, 
       real_source, keywords, publish_time, 
       create_time, url, status, 
-      times, content, html_content
+      times
       )
     values (#{id,jdbcType=BIGINT}, #{columnId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{tag,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
       #{realSource,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, 
       #{createTime,jdbcType=TIMESTAMP}, #{url,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{times,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{htmlContent,jdbcType=LONGVARCHAR}
+      #{times,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.esy.stack.entity.ArticleWithBLOBs" >
+  <insert id="insertSelective" parameterType="com.esy.stack.entity.Article" >
     insert into t_article
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -95,12 +126,7 @@
       <if test="times != null" >
         times,
       </if>
-      <if test="content != null" >
-        content,
-      </if>
-      <if test="htmlContent != null" >
-        html_content,
-      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -142,15 +168,9 @@
       <if test="times != null" >
         #{times,jdbcType=INTEGER},
       </if>
-      <if test="content != null" >
-        #{content,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="htmlContent != null" >
-        #{htmlContent,jdbcType=LONGVARCHAR},
-      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.esy.stack.entity.ArticleWithBLOBs" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.esy.stack.entity.Article" >
     update t_article
     <set >
       <if test="columnId != null" >
@@ -189,31 +209,8 @@
       <if test="times != null" >
         times = #{times,jdbcType=INTEGER},
       </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="htmlContent != null" >
-        html_content = #{htmlContent,jdbcType=LONGVARCHAR},
-      </if>
+
     </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.esy.stack.entity.ArticleWithBLOBs" >
-    update t_article
-    set column_id = #{columnId,jdbcType=INTEGER},
-      title = #{title,jdbcType=VARCHAR},
-      tag = #{tag,jdbcType=VARCHAR},
-      summary = #{summary,jdbcType=VARCHAR},
-      author = #{author,jdbcType=VARCHAR},
-      real_source = #{realSource,jdbcType=VARCHAR},
-      keywords = #{keywords,jdbcType=VARCHAR},
-      publish_time = #{publishTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      url = #{url,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
-      times = #{times,jdbcType=INTEGER},
-      content = #{content,jdbcType=LONGVARCHAR},
-      html_content = #{htmlContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.esy.stack.entity.Article" >

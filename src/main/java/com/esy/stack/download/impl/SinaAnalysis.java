@@ -1,7 +1,7 @@
 package com.esy.stack.download.impl;
 
 import com.esy.stack.download.BaseAnalysis;
-import com.esy.stack.entity.ArticleWithBLOBs;
+import com.esy.stack.entity.Article;
 import com.esy.stack.entity.WebSiteColumn;
 import com.esy.stack.util.Constants;
 import com.esy.stack.util.StringManager;
@@ -31,13 +31,13 @@ public class SinaAnalysis extends BaseAnalysis {
     }
 
     @Override
-    protected List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
-        List<ArticleWithBLOBs> result = new ArrayList<ArticleWithBLOBs>();
+    protected List<Article> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
+        List<Article> result = new ArrayList<Article>();
         Document doc = Jsoup.parse(content);
         System.out.println("doc :" + doc);
         Elements atagList = doc.select("#Main .listBlk .list_009 a[href ^= http://finance.sina.com.cn/stock]");
         for (Element each : atagList) {
-            ArticleWithBLOBs record = new ArticleWithBLOBs();
+            Article record = new Article();
             record.setTitle(each.text());
             record.setUrl(each.attr("href"));
             record.setCreateTime(new Date());

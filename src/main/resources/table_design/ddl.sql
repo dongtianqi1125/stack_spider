@@ -39,3 +39,12 @@ CREATE TABLE `t_web_site_main` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='网站主表';
 
+CREATE TABLE `t_article_detail` (
+  `id` bigint(64) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `article_id` bigint(64) DEFAULT NULL COMMENT '文章id',
+  `html_path` varchar(100) DEFAULT NULL COMMENT '文件地址',
+  `content` longtext COMMENT '文章内容文本',
+  `content_htmt` longtext COMMENT '文章内容（html)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
+

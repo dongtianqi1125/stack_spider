@@ -1,7 +1,7 @@
 package com.esy.stack.download.impl;
 
 import com.esy.stack.download.BaseAnalysis;
-import com.esy.stack.entity.ArticleWithBLOBs;
+import com.esy.stack.entity.Article;
 import com.esy.stack.entity.WebSiteColumn;
 import com.esy.stack.util.Constants;
 import com.esy.stack.util.StringManager;
@@ -34,12 +34,12 @@ public class QQAnalysis extends BaseAnalysis{
 	}
 
 	@Override
-	protected List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
-		List<ArticleWithBLOBs> result = new ArrayList<ArticleWithBLOBs>();
+	protected List<Article> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
+		List<Article> result = new ArrayList<Article>();
 		Document doc = Jsoup.parse(content);
 		Elements atagList = doc.select(SELECT);
 		for (Element each : atagList) {
-			ArticleWithBLOBs record = new ArticleWithBLOBs();
+			Article record = new Article();
 			record.setTitle(each.text());
 			record.setUrl(aWebSiteColumn.getDomainUrl() + each.attr(Constants.ATTR_HREF));
 			record.setCreateTime(new Date());

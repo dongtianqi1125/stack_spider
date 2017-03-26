@@ -1,20 +1,23 @@
 package com.esy.stack.dao.impl;
 
+import com.esy.stack.dao.BaseDao;
 import com.esy.stack.entity.Article;
-import com.esy.stack.entity.ArticleWithBLOBs;
+import com.esy.stack.entity.Article;
 
-public interface ArticleMapper {
+public interface ArticleMapper extends BaseDao<Article> {
     int deleteByPrimaryKey(Long id);
 
-    int insert(ArticleWithBLOBs record);
+    int insert(Article record);
 
-    int insertSelective(ArticleWithBLOBs record);
+    int insertSelective(Article record);
 
-    ArticleWithBLOBs selectByPrimaryKey(Long id);
+    Article selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(ArticleWithBLOBs record);
-
-    int updateByPrimaryKeyWithBLOBs(ArticleWithBLOBs record);
+    int updateByPrimaryKeySelective(Article record);
 
     int updateByPrimaryKey(Article record);
+
+    String selectCharSetByArticleId(long id);
+
+    int countWaitArticle(Article article);
 }

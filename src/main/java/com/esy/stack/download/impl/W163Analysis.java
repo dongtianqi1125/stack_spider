@@ -3,7 +3,7 @@ package com.esy.stack.download.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.esy.stack.download.BaseAnalysis;
-import com.esy.stack.entity.ArticleWithBLOBs;
+import com.esy.stack.entity.Article;
 import com.esy.stack.entity.WebSiteColumn;
 import com.esy.stack.util.Constants;
 import com.esy.stack.util.StringManager;
@@ -33,24 +33,24 @@ public class W163Analysis extends BaseAnalysis {
     private static String dataCallback = stringManager.getValue("data_callback");
 
     @Override
-    protected List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
+    protected List<Article> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
         if(StringUtils.isEmpty(content))
             return Collections.emptyList();
         int start = dataCallback.length() + 1;
         String newContent = content.trim();
         int end = newContent.length() - 1;
         List<W163DO> records = JSON.parseArray(newContent.substring(start, end), W163DO.class);
-        List<ArticleWithBLOBs> result = new ArrayList<ArticleWithBLOBs>();
+        List<Article> result = new ArrayList<Article>();
         for (W163DO w163DO : records) {
-            ArticleWithBLOBs articleWithBLOBs = createBy(w163DO);
-            articleWithBLOBs.setColumnId(aWebSiteColumn.getId());
-            result.add(articleWithBLOBs);
+            Article Article = createBy(w163DO);
+            Article.setColumnId(aWebSiteColumn.getId());
+            result.add(Article);
         }
         return result;
     }
 
-    private ArticleWithBLOBs createBy(W163DO record) {
-        ArticleWithBLOBs articleRecord = new ArticleWithBLOBs();
+    private Article createBy(W163DO record) {
+        Article articleRecord = new Article();
         articleRecord.setCreateTime(new Date());
         articleRecord.setPublishTime(record.getTime());
         articleRecord.setUrl(record.getDocurl());

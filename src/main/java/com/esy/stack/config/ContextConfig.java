@@ -14,7 +14,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,7 +21,7 @@ import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.concurrent.Executor;
+import java.util.concurrent.*;
 
 @Configuration
 @ComponentScan(basePackages = {"com.esy.stack"})
@@ -42,6 +41,20 @@ public class ContextConfig {
 		properties.load(new ClassPathResource("prop/jdbc_prod.properties").getInputStream());
 		return properties;
 	}
+	@Profile(value = "dev")
+	@Bean(name = "serviceConfig")
+	Properties configDev() throws IOException {
+		Properties properties = new Properties();
+		properties.load(new ClassPathResource("prop/config_dev.properties").getInputStream());
+		return properties;
+	}
+	@Profile(value = "prod")
+	@Bean(name = "serviceConfig")
+	Properties configProd() throws IOException {
+		Properties properties = new Properties();
+		properties.load(new ClassPathResource("prop/config_prod.properties").getInputStream());
+		return properties;
+	}
 
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource(@Qualifier("jdbcConfig") Properties env) throws PropertyVetoException {
@@ -54,12 +67,8 @@ public class ContextConfig {
 	}
 	
 	@Bean
-	public Executor executor() {
-		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(5);
-		executor.setMaxPoolSize(10);
-		executor.setQueueCapacity(25);
-		return executor;
+	public ExecutorService executor() {
+		return new ThreadPoolExecutor(10, 50, 100, TimeUnit.SECONDS, new ArrayBlockingQueue(2000));
 	}
 	@Bean
 	public TaskScheduler taskScheduler(){
@@ -71,7 +80,7 @@ public class ContextConfig {
 	@Bean(name = "config")
 	Properties properties() throws IOException {
 		Properties properties = new Properties();
-		properties.load(new ClassPathResource("prop/config.properties").getInputStream());
+		properties.load(new ClassPathResource("prop/config_dev.properties").getInputStream());
 		return properties;
 	}
 	

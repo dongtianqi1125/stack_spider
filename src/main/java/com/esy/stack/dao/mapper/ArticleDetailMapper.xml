@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.esy.stack.dao.impl.ArticleDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.esy.stack.entity.ArticleDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="article_id" property="articleId" jdbcType="BIGINT" />
+    <result column="html_path" property="htmlPath" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.esy.stack.entity.ArticleDetailWithBLOBs" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="content_htmt" property="contentHtmt" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, article_id, html_path
+  </sql>
+  <sql id="Blob_Column_List" >
+    content, content_htmt
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_article_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_article_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.esy.stack.entity.ArticleDetailWithBLOBs" >
+    insert into t_article_detail (id, article_id, html_path, 
+      content, content_htmt)
+    values (#{id,jdbcType=BIGINT}, #{articleId,jdbcType=BIGINT}, #{htmlPath,jdbcType=VARCHAR}, 
+      #{content,jdbcType=LONGVARCHAR}, #{contentHtmt,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.esy.stack.entity.ArticleDetailWithBLOBs" >
+    insert into t_article_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="articleId != null" >
+        article_id,
+      </if>
+      <if test="htmlPath != null" >
+        html_path,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="contentHtmt != null" >
+        content_htmt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="articleId != null" >
+        #{articleId,jdbcType=BIGINT},
+      </if>
+      <if test="htmlPath != null" >
+        #{htmlPath,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="contentHtmt != null" >
+        #{contentHtmt,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.esy.stack.entity.ArticleDetailWithBLOBs" >
+    update t_article_detail
+    <set >
+      <if test="articleId != null" >
+        article_id = #{articleId,jdbcType=BIGINT},
+      </if>
+      <if test="htmlPath != null" >
+        html_path = #{htmlPath,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="contentHtmt != null" >
+        content_htmt = #{contentHtmt,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.esy.stack.entity.ArticleDetailWithBLOBs" >
+    update t_article_detail
+    set article_id = #{articleId,jdbcType=BIGINT},
+      html_path = #{htmlPath,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR},
+      content_htmt = #{contentHtmt,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.esy.stack.entity.ArticleDetail" >
+    update t_article_detail
+    set article_id = #{articleId,jdbcType=BIGINT},
+      html_path = #{htmlPath,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

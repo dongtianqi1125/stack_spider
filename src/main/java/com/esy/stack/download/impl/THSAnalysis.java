@@ -1,7 +1,7 @@
 package com.esy.stack.download.impl;
 
 import com.esy.stack.download.BaseAnalysis;
-import com.esy.stack.entity.ArticleWithBLOBs;
+import com.esy.stack.entity.Article;
 import com.esy.stack.entity.WebSiteColumn;
 import com.esy.stack.util.Constants;
 import com.esy.stack.util.StringManager;
@@ -31,13 +31,13 @@ public class THSAnalysis extends BaseAnalysis {
     }
 
     @Override
-    protected List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
-        List<ArticleWithBLOBs> result = new ArrayList<>();
+    protected List<Article> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
+        List<Article> result = new ArrayList<>();
         Document doc = Jsoup.parse(content);
         System.out.println(doc);
         Elements atagList = doc.select(".t_news .txt_t a[href ^= newsDetail]");
         for (Element each : atagList) {
-            ArticleWithBLOBs record = new ArticleWithBLOBs();
+            Article record = new Article();
             record.setTitle(each.text());
             record.setUrl(each.attr("href"));
             record.setCreateTime(new Date());

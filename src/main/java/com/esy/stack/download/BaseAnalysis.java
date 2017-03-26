@@ -3,7 +3,7 @@ package com.esy.stack.download;
 import com.esy.stack.dao.impl.ArticleMapper;
 import com.esy.stack.dao.impl.WebSiteColumnMapper;
 import com.esy.stack.dao.impl.WebSiteMainMapper;
-import com.esy.stack.entity.ArticleWithBLOBs;
+import com.esy.stack.entity.Article;
 import com.esy.stack.entity.WebSiteColumn;
 import com.esy.stack.entity.WebSiteMain;
 import com.esy.stack.util.Constants;
@@ -42,20 +42,25 @@ public abstract class BaseAnalysis implements Analystor {
      * </ol>
      */
     @Override
-    public void analys() {
+    public void     analys() {
         List<WebSiteColumn> columns = getWebSiteColumnDOs();
         if (CollectionUtils.isEmpty(columns))
             return;
         for (WebSiteColumn column : columns)
             updateColumnStatus(column.getId(), StatusEnum.PROCESSING);
         for (WebSiteColumn aWebSiteColumn : columns) {
-            handleEachColumn(aWebSiteColumn);
+            try {
+                handleEachColumn(aWebSiteColumn);
+            } catch (RuntimeException e) {
+                log.error("", e);
+            }
             updateColumnStatus(aWebSiteColumn.getId(), StatusEnum.SUCCESS);
         }
     }
 
     /**
-     *改变栏目状态为处理中
+     * 改变栏目状态为处理中
+     *
      * @param aWebSiteColumn
      */
     @Transactional
@@ -65,9 +70,10 @@ public abstract class BaseAnalysis implements Analystor {
             if (StringUtils.isEmpty(content)) {
                 continue;
             }
-            List<ArticleWithBLOBs> articles = parseArticles(content, aWebSiteColumn);
-            for (ArticleWithBLOBs each : articles) {
+            List<Article> articles = parseArticles(content, aWebSiteColumn);
+            for (Article each : articles) {
                 try {
+                    each.setStatus(StatusEnum.WAIT.getValue());
                     articleMapper.insert(each);
                 } catch (Exception e) {
                     log.error("article插入异常", e);
@@ -92,7 +98,7 @@ public abstract class BaseAnalysis implements Analystor {
      * @param content
      * @return
      */
-    protected abstract List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn);
+    protected abstract List<Article> parseArticles(String content, WebSiteColumn aWebSiteColumn);
 
     /**
      * 拼凑栏目url

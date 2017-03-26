@@ -2,7 +2,7 @@ package com.esy.stack.download.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.esy.stack.download.BaseAnalysis;
-import com.esy.stack.entity.ArticleWithBLOBs;
+import com.esy.stack.entity.Article;
 import com.esy.stack.entity.WebSiteColumn;
 import com.esy.stack.util.Constants;
 import com.esy.stack.util.StringManager;
@@ -32,20 +32,20 @@ public class JRTTAnalysis extends BaseAnalysis {
     }
 
     @Override
-    protected List<ArticleWithBLOBs> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
-        List<ArticleWithBLOBs> result = new ArrayList<>();
+    protected List<Article> parseArticles(String content, WebSiteColumn aWebSiteColumn) {
+        List<Article> result = new ArrayList<>();
         JRTTJsonDTO jrttJsonDTO = JSON.parseObject(content, JRTTJsonDTO.class);
         List<JRTTDTO> dtolist = jrttJsonDTO.getData();
         for (JRTTDTO jrttdto : dtolist) {
-            ArticleWithBLOBs articleWithBLOBs = createBy(jrttdto);
-            articleWithBLOBs.setColumnId(aWebSiteColumn.getId());
-            result.add(articleWithBLOBs);
+            Article Article = createBy(jrttdto);
+            Article.setColumnId(aWebSiteColumn.getId());
+            result.add(Article);
         }
         return result;
     }
 
-    private ArticleWithBLOBs createBy(JRTTDTO record) {
-        ArticleWithBLOBs article = new ArticleWithBLOBs();
+    private Article createBy(JRTTDTO record) {
+        Article article = new Article();
         article.setCreateTime(new Date());
         article.setTag(record.getTag());
         article.setTitle(record.getTitle());

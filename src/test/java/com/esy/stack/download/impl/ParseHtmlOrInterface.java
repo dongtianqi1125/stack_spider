@@ -54,7 +54,7 @@ public class ParseHtmlOrInterface {
 
     @Test
     public void testDownloadHtml() throws Exception {
-        HttpClientUtil.downloadToFile("http://m.thepaper.cn/load_list.jsp?nodeids=25434", "utf-8", new File("d://sql.txt"));
+        HttpClientUtil.downloadToFile("http://money.163.com/17/0323/01/CG65ETDF002580S6.html", "gbk", new File("d://sql.txt"));
     }
 
 }
