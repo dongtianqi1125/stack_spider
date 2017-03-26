@@ -68,7 +68,7 @@ public class ContextConfig {
 	
 	@Bean
 	public ExecutorService executor() {
-		return new ThreadPoolExecutor(10, 50, 100, TimeUnit.SECONDS, new ArrayBlockingQueue(2000));
+		return new ThreadPoolExecutor(10, 50, 100, TimeUnit.SECONDS, new ArrayBlockingQueue(20000));
 	}
 	@Bean
 	public TaskScheduler taskScheduler(){
