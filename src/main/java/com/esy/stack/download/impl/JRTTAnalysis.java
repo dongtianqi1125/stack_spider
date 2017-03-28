@@ -37,14 +37,17 @@ public class JRTTAnalysis extends BaseAnalysis {
         JRTTJsonDTO jrttJsonDTO = JSON.parseObject(content, JRTTJsonDTO.class);
         List<JRTTDTO> dtolist = jrttJsonDTO.getData();
         for (JRTTDTO jrttdto : dtolist) {
-            Article Article = createBy(jrttdto);
-            Article.setColumnId(aWebSiteColumn.getId());
-            result.add(Article);
+            Article article = createBy(jrttdto);
+            if(article == null) continue;
+            article.setColumnId(aWebSiteColumn.getId());
+            result.add(article);
         }
         return result;
     }
 
     private Article createBy(JRTTDTO record) {
+        if(record.getSource_url().startsWith("http://ad.toutiao.com"))
+            return null;
         Article article = new Article();
         article.setCreateTime(new Date());
         article.setTag(record.getTag());

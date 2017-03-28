@@ -42,7 +42,7 @@ public abstract class BaseAnalysis implements Analystor {
      * </ol>
      */
     @Override
-    public void     analys() {
+    public void analys() {
         List<WebSiteColumn> columns = getWebSiteColumnDOs();
         if (CollectionUtils.isEmpty(columns))
             return;
@@ -52,7 +52,7 @@ public abstract class BaseAnalysis implements Analystor {
             try {
                 handleEachColumn(aWebSiteColumn);
             } catch (RuntimeException e) {
-                log.error("", e);
+                log.error("网站接口解析异常:", e);
             }
             updateColumnStatus(aWebSiteColumn.getId(), StatusEnum.SUCCESS);
         }
@@ -126,6 +126,7 @@ public abstract class BaseAnalysis implements Analystor {
      * @param aWebSiteColumn
      * @param status
      */
+    @Transactional
     private void updateColumnStatus(Integer columnId, StatusEnum status) {
         WebSiteColumn aWebSiteColumn = new WebSiteColumn();
         aWebSiteColumn.setId(columnId);
