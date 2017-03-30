@@ -10,12 +10,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Arrays;
+
 /**
  * Created by guanjie on 2017/3/25.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring-dao.xml")
-@ActiveProfiles("dev")
+@ActiveProfiles("prod")
 public class ArticleMapperTest {
     @Autowired
     ArticleMapper articleMapper;
@@ -31,6 +33,11 @@ public class ArticleMapperTest {
         System.out.println(articleMapper.selectCharSetByArticleId(2272));;
         System.out.println(path);
     }
+    @Test
+    public void testSelectLastOne() {
+        System.out.println(articleMapper.selectLastOne());
+    }
+
     @Value(value = "#{serviceConfig['website.html.downloadpath']}")
     private String path;
 }

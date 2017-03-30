@@ -63,12 +63,13 @@ public class ContextConfig {
 		dataSource.setJdbcUrl(env.getProperty("jdbc.url"));
 		dataSource.setUser(env.getProperty("jdbc.user"));
 		dataSource.setPassword(env.getProperty("jdbc.password"));
+		dataSource.setMaxPoolSize(500);
 		return dataSource;
 	}
 	
 	@Bean
 	public ExecutorService executor() {
-		return new ThreadPoolExecutor(10, 50, 100, TimeUnit.SECONDS, new ArrayBlockingQueue(20000));
+		return new ThreadPoolExecutor(10, 50, 100, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 	}
 	@Bean
 	public TaskScheduler taskScheduler(){

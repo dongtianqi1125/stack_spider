@@ -76,7 +76,7 @@ public abstract class BaseAnalysis implements Analystor {
                     each.setStatus(StatusEnum.WAIT.getValue());
                     articleMapper.insert(each);
                 } catch (Exception e) {
-                    log.error("article插入异常", e);
+                    log.error("article插入异常" + e.getMessage());
                 }
             }
         }

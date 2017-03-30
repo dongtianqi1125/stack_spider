@@ -39,6 +39,13 @@
       AND  times =  #{times,jdbcType=INTEGER}
     </if>
   </select>
+
+  <select id="selectLastOne" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from t_article
+    ORDER  BY  create_time DESC limit 1;
+  </select>
   <select id="countWaitArticle" resultType="int" parameterType="com.esy.stack.entity.Article" >
     select
       count(1)

@@ -20,4 +20,6 @@ public interface ArticleMapper extends BaseDao<Article> {
     String selectCharSetByArticleId(long id);
 
     int countWaitArticle(Article article);
+
+    Article selectLastOne();
 }

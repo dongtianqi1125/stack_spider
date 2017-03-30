@@ -1,6 +1,7 @@
 package com.esy.stack.task;
 
 import com.esy.stack.dao.impl.WebSiteColumnMapper;
+import com.esy.stack.download.CheckErrorService;
 import com.esy.stack.entity.WebSiteColumn;
 import com.esy.stack.util.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,15 @@ public class EndCheck {
             webSiteColumnMapper.updateStatus(aWebSiteColumn);
         }
     }
+    @Autowired
+    private CheckErrorService checkErrorService;
 
+    /**
+     * 用于检查错误
+     */
+    @Scheduled(cron = "0 0 0/1 * * ?")
+    public void checkError() {
+        checkErrorService.checkError();
+    }
 
 }
