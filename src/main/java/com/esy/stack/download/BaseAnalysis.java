@@ -12,7 +12,6 @@ import com.esy.stack.util.StatusEnum;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -63,7 +62,6 @@ public abstract class BaseAnalysis implements Analystor {
      *
      * @param aWebSiteColumn
      */
-    @Transactional
     private void handleEachColumn(WebSiteColumn aWebSiteColumn) {
         for (String colunUrl : parseColumnUrl(aWebSiteColumn)) {
             String content = getIntefaceContent(colunUrl);
@@ -126,7 +124,6 @@ public abstract class BaseAnalysis implements Analystor {
      * @param aWebSiteColumn
      * @param status
      */
-    @Transactional
     private void updateColumnStatus(Integer columnId, StatusEnum status) {
         WebSiteColumn aWebSiteColumn = new WebSiteColumn();
         aWebSiteColumn.setId(columnId);

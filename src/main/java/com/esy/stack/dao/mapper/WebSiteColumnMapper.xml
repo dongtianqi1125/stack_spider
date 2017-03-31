@@ -51,7 +51,7 @@
       </if>
   </select>
   <select id="checkIfAllHandler" resultType="int" >
-    SELECT (SELECT count(*) from t_web_site_column) = (SELECT COUNT(1) from t_web_site_column t where t.`status` = 2)
+    SELECT (SELECT count(1) from t_web_site_column) = (SELECT COUNT(1) from t_web_site_column t where t.`status` = 2)
   </select>
 
 

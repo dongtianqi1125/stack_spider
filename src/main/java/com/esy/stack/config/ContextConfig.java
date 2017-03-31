@@ -1,10 +1,12 @@
 package com.esy.stack.config;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.esy.stack.util.Constants;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -25,7 +27,7 @@ import java.util.concurrent.*;
 
 @Configuration
 @ComponentScan(basePackages = {"com.esy.stack"})
-public class ContextConfig {
+public class ContextConfig{
 
 	@Profile(value = "dev")
 	@Bean(name = "jdbcConfig")
@@ -58,13 +60,12 @@ public class ContextConfig {
 
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource(@Qualifier("jdbcConfig") Properties env) throws PropertyVetoException {
-		ComboPooledDataSource dataSource = new ComboPooledDataSource();
-		dataSource.setDriverClass(env.getProperty("jdbc.driverClass"));
-		dataSource.setJdbcUrl(env.getProperty("jdbc.url"));
-		dataSource.setUser(env.getProperty("jdbc.user"));
-		dataSource.setPassword(env.getProperty("jdbc.password"));
-		dataSource.setMaxPoolSize(500);
-		return dataSource;
+		DruidDataSource druidDataSource = new DruidDataSource();
+		druidDataSource.setUrl(env.getProperty("jdbc.url"));
+		druidDataSource.setUsername(env.getProperty("jdbc.user"));
+		druidDataSource.setPassword(env.getProperty("jdbc.password"));
+		druidDataSource.setMaxActive(500);
+		return druidDataSource;
 	}
 	
 	@Bean

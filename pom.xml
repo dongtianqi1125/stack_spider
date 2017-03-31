@@ -9,7 +9,7 @@
 
     <properties>
         <spring.version>4.2.3.RELEASE</spring.version>
-        <mysql.version>5.1.27</mysql.version>
+        <mysql.version>5.1.40</mysql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.8</jdk.version>
     </properties>
@@ -206,6 +206,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>20.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.29</version>
         </dependency>
 
     </dependencies>
