@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 @Log4j
-@ActiveProfiles("dev")
+@ActiveProfiles("prod")
 public class QQAnalysisTest {
 
     @Autowired
@@ -56,13 +56,13 @@ public class QQAnalysisTest {
      */
     @Test
     public void testGetWebSiteId() throws Exception {
-        qqAnalysis.analys();
-        chinatimesProcess.analys();
-        thsAnalysis.analys();
-        sinaAnalysis.analys();
+//        qqAnalysis.analys();
+//        chinatimesProcess.analys();
+//        thsAnalysis.analys();
+//        sinaAnalysis.analys();
         jrttAnalysis.analys();
-        paperAnalysis.analys();
-        w163Analysis.analys();
+//        paperAnalysis.analys();
+//        w163Analysis.analys();
         ;
         TimeUnit.SECONDS.sleep(20);
     }

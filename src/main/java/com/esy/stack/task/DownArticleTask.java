@@ -20,7 +20,7 @@ public class DownArticleTask implements Downloadable {
     @Autowired
     private DownArticleHtmlService downArticleHtmlService;
 
-    @Scheduled(cron = "0 0 0/1 * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     @Override
     public void download() {
         int count = downArticleHtmlService.countWaitArticles();

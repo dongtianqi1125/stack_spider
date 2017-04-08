@@ -4,6 +4,8 @@ import com.esy.stack.dao.BaseDao;
 import com.esy.stack.entity.Article;
 import com.esy.stack.entity.Article;
 
+import java.util.List;
+
 public interface ArticleMapper extends BaseDao<Article> {
     int deleteByPrimaryKey(Long id);
 
@@ -22,4 +24,7 @@ public interface ArticleMapper extends BaseDao<Article> {
     int countWaitArticle(Article article);
 
     Article selectLastOne();
+
+
+    List<Article> listArticles();
 }
